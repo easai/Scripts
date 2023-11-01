@@ -21,7 +21,9 @@ private:
     Ui::MainWindow *ui;
     QSqlDatabase m_db;
     ScriptList m_list;
+    QStringList m_header;
 
     void setTable();
+    void updateItem();
 };
 #endif // MAINWINDOW_H

@@ -13,6 +13,7 @@ public:
 
     int retrieve(QSqlDatabase *db);
     QList<Script> list() const;
+    void updateItem(QSqlDatabase *db, const QString& exp, const QString& field, int id);
 
 signals:
 private:

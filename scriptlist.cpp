@@ -12,16 +12,18 @@ int ScriptList::retrieve(QSqlDatabase *db) {
     return 0;
   }
   QSqlQuery query(*db);
-  QString sql = "SELECT en,ja FROM `scripts`";
+  QString sql = "SELECT id, en, ja, parent_id FROM `scripts`";
   if (!query.exec(sql)) {
     qInfo() << db->lastError().text();
     qInfo() << query.lastError().text();
   } else {
     m_list.clear();
     while (query.next()) {
-      QString en = query.value(0).toString();
-      QString ja = query.value(1).toString();
-      Script script(this, en, ja);
+      int cnt = 0;
+      int id = query.value(cnt).toInt();
+      QString en = query.value(++cnt).toString();
+      QString ja = query.value(++cnt).toString();
+      Script script(this, id, en, ja);
       m_list.append(script);
     }
   }
@@ -30,3 +32,21 @@ int ScriptList::retrieve(QSqlDatabase *db) {
 }
 
 QList<Script> ScriptList::list() const { return m_list; }
+
+void ScriptList::updateItem(QSqlDatabase *db, const QString &exp,
+                            const QString &field, int id) {
+  if (!db->open()) {
+    qInfo() << db->lastError().text();
+    return;
+  }
+  QSqlQuery query(*db);
+  QString sql = "UPDATE `scripts` SET `" + field + "`=:exp WHERE id=:id ";
+  query.prepare(sql);
+  query.bindValue(":id", id);
+  query.bindValue(":exp", exp);
+  if (!query.exec()) {
+    qInfo() << db->lastError().text();
+    qInfo() << query.lastError().text();
+  }
+  db->close();
+}
