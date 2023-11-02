@@ -33,11 +33,13 @@ void MainWindow::setTable() {
 
   m_header << "id"
            << "en"
-           << "ja";
+           << "ja"
+           << "commentary";
 
   ui->tableWidget->setColumnCount(m_header.count());
   ui->tableWidget->setHorizontalHeaderLabels(m_header);
   ui->tableWidget->horizontalHeader()->hideSection(0);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Stretch);
   ui->tableWidget->verticalHeader()->setVisible(false);
 
   QList<Script> lst = m_list.list();
@@ -58,6 +60,8 @@ void MainWindow::setTable() {
     QTableWidgetItem *descItem = new QTableWidgetItem(item.ja());
     ui->tableWidget->setItem(i, ++cnt, descItem);
 
+    QTableWidgetItem *commentaryItem = new QTableWidgetItem(item.commentary());
+    ui->tableWidget->setItem(i, ++cnt, commentaryItem);
   }
 }
 

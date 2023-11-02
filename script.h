@@ -6,7 +6,8 @@
 class Script : public QObject {
   Q_OBJECT
 public:
-  explicit Script(QObject *parent = nullptr, int id=0, const QString& en="", const QString& ja="");
+  explicit Script(QObject *parent = nullptr, int id = 0, const QString &en = "",
+                  const QString &ja = "", const QString &commentary="");
   Script(const Script &);
   Script &operator=(const Script &);
 
@@ -19,11 +20,15 @@ public:
   int id() const;
   void setId(int newId);
 
-  signals:
+  QString commentary() const;
+  void setCommentary(const QString &newCommentary);
+
+signals:
 private:
-    int m_id;
+  int m_id;
   QString m_en;
   QString m_ja;
+  QString m_commentary;
 };
 
 #endif // SCRIPT_H
