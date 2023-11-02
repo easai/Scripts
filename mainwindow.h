@@ -17,6 +17,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void updateItem();
+    void createItem();
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase m_db;
@@ -24,6 +28,5 @@ private:
     QStringList m_header;
 
     void setTable();
-    void updateItem();
 };
 #endif // MAINWINDOW_H

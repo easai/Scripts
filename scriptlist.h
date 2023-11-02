@@ -14,10 +14,12 @@ public:
     int retrieve(QSqlDatabase *db);
     QList<Script> list() const;
     void updateItem(QSqlDatabase *db, const QString& exp, const QString& field, int id);
-
+    void createItem(QSqlDatabase *db, const QString& exp, const QString& field);
+    void sort();
 signals:
 private:
     QList<Script> m_list;
+    static bool comparetaor(Script a, Script b);
 };
 
 #endif // SCRIPTLIST_H

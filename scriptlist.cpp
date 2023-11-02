@@ -50,3 +50,30 @@ void ScriptList::updateItem(QSqlDatabase *db, const QString &exp,
   }
   db->close();
 }
+
+void ScriptList::createItem(QSqlDatabase *db, const QString &exp, const QString &field)
+{
+  if (!db->open()) {
+    qInfo() << db->lastError().text();
+    return;
+  }
+  QSqlQuery query(*db);
+  QString sql = "INSERT INTO`scripts` ("+field+") VALUES (:exp)";
+  query.prepare(sql);
+  query.bindValue(":exp", exp);
+  if (!query.exec()) {
+    qInfo() << db->lastError().text();
+    qInfo() << query.lastError().text();
+  }
+  db->close();
+}
+
+void ScriptList::sort()
+{
+  std::sort(m_list.begin(),m_list.end(),comparetaor);
+}
+
+bool ScriptList::comparetaor(Script a, Script b)
+{
+  return a.en()<b.en();
+}

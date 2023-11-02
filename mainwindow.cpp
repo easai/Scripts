@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QtSql>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
   setTable();
   connect(ui->tableWidget, &QTableWidget::cellChanged, this,
           &MainWindow::updateItem);
+  connect(ui->pushButton_add, &QPushButton::clicked, this,
+          &MainWindow::createItem);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -26,7 +29,7 @@ void MainWindow::setTable() {
   if (nItems <= 0) {
     return;
   }
-  //  std::sort(keyList.begin(), keyList.end());
+  m_list.sort();
 
   m_header << "id"
            << "en"
@@ -63,5 +66,15 @@ void MainWindow::updateItem() {
     int id = pId->text().toInt();
     QString field = m_header.at(col);
     m_list.updateItem(&m_db, exp, field, id);
+  }
+}
+
+void MainWindow::createItem()
+{
+  bool ok;
+  QString exp = QInputDialog::getText(this, tr("Add new script"), tr("en"), QLineEdit::Normal, "", &ok);
+  if(ok){
+    m_list.createItem(&m_db, exp, "en");
+    setTable();
   }
 }
