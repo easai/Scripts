@@ -2,10 +2,10 @@
 #include "./ui_mainwindow.h"
 
 #include <QDebug>
+#include <QInputDialog>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QtSql>
-#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -37,6 +37,7 @@ void MainWindow::setTable() {
 
   ui->tableWidget->setColumnCount(m_header.count());
   ui->tableWidget->setHorizontalHeaderLabels(m_header);
+  ui->tableWidget->horizontalHeader()->hideSection(0);
   ui->tableWidget->verticalHeader()->setVisible(false);
 
   QList<Script> lst = m_list.list();
@@ -49,10 +50,14 @@ void MainWindow::setTable() {
     QTableWidgetItem *idItem =
         new QTableWidgetItem(QVariant(item.id()).toString());
     ui->tableWidget->setItem(i, cnt, idItem);
+    idItem->setFlags(idItem->flags() & ~Qt::ItemIsEditable);
+
     QTableWidgetItem *targetItem = new QTableWidgetItem(item.en());
     ui->tableWidget->setItem(i, ++cnt, targetItem);
+
     QTableWidgetItem *descItem = new QTableWidgetItem(item.ja());
     ui->tableWidget->setItem(i, ++cnt, descItem);
+
   }
 }
 
@@ -69,11 +74,11 @@ void MainWindow::updateItem() {
   }
 }
 
-void MainWindow::createItem()
-{
+void MainWindow::createItem() {
   bool ok;
-  QString exp = QInputDialog::getText(this, tr("Add new script"), tr("en"), QLineEdit::Normal, "", &ok);
-  if(ok){
+  QString exp = QInputDialog::getText(this, tr("Add new script"), tr("en"),
+                                      QLineEdit::Normal, "", &ok);
+  if (ok) {
     m_list.createItem(&m_db, exp, "en");
     setTable();
   }
