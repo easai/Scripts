@@ -4,7 +4,7 @@
 #include <QObject>
 
 #define AUTHOR "easai"
-#define APPNAME "Numbers"
+#define APPNAME "Scripts"
 #define GENERAL "General"
 #define GEOM "Geometry"
 
