@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "aboutdialog.h"
 
 #include <QDebug>
 #include <QInputDialog>
@@ -13,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
   setWindowIcon(QIcon("://images/favicon.ico"));
   m_db = QSqlDatabase::addDatabase("QODBC", "linguistics");
   m_db.setDatabaseName("linguistics");
+  connect(ui->action_About, &QAction::triggered, this,
+          &MainWindow::about);
   connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
   setTable();
   connect(ui->tableWidget, &QTableWidget::cellChanged, this,
@@ -87,3 +90,10 @@ void MainWindow::createItem() {
     setTable();
   }
 }
+
+
+void MainWindow::about() {
+  AboutDialog *dlg = new AboutDialog(this);
+  dlg->exec();
+}
+

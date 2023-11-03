@@ -20,6 +20,7 @@ public:
 private slots:
     void updateItem();
     void createItem();
+    void about();
 
 private:
     Ui::MainWindow *ui;
