@@ -14,17 +14,22 @@ MainWindow::MainWindow(QWidget *parent)
   setWindowIcon(QIcon("://images/favicon.ico"));
   m_db = QSqlDatabase::addDatabase("QODBC", "linguistics");
   m_db.setDatabaseName("linguistics");
-  connect(ui->action_About, &QAction::triggered, this,
-          &MainWindow::about);
+  connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
   connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
   setTable();
   connect(ui->tableWidget, &QTableWidget::cellChanged, this,
           &MainWindow::updateItem);
   connect(ui->pushButton_add, &QPushButton::clicked, this,
           &MainWindow::createItem);
+  m_config.load();
+  restoreGeometry(m_config.geometry());
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  m_config.setGeometry(saveGeometry());
+  m_config.save();
+  delete ui;
+}
 
 void MainWindow::setTable() {
   int nItems = m_list.retrieve(&m_db);
@@ -42,7 +47,8 @@ void MainWindow::setTable() {
   ui->tableWidget->setColumnCount(m_header.count());
   ui->tableWidget->setHorizontalHeaderLabels(m_header);
   ui->tableWidget->horizontalHeader()->hideSection(0);
-  ui->tableWidget->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Stretch);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      3, QHeaderView::Stretch);
   ui->tableWidget->verticalHeader()->setVisible(false);
 
   QList<Script> lst = m_list.list();
@@ -91,9 +97,7 @@ void MainWindow::createItem() {
   }
 }
 
-
 void MainWindow::about() {
   AboutDialog *dlg = new AboutDialog(this);
   dlg->exec();
 }
-

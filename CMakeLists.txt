@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         resources.qrc
         icon.rc
         aboutdialog.h aboutdialog.cpp aboutdialog.ui
+        config.h config.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Scripts APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "scriptlist.h"
+#include "config.h"
 #include <QMainWindow>
 #include <QSqlDatabase>
 
@@ -27,6 +28,7 @@ private:
     QSqlDatabase m_db;
     ScriptList m_list;
     QStringList m_header;
+    Config m_config;
 
     void setTable();
 };
