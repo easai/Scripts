@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
   m_db.setDatabaseName("linguistics");
   connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
   connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
+  m_header << "id"
+           << "en"
+           << "ja"
+           << "commentary";
   setTable();
   connect(ui->tableWidget, &QTableWidget::cellChanged, this,
           &MainWindow::updateItem);
@@ -38,12 +42,6 @@ void MainWindow::setTable() {
     return;
   }
   m_list.sort();
-
-  m_header << "id"
-           << "en"
-           << "ja"
-           << "commentary";
-
   ui->tableWidget->setColumnCount(m_header.count());
   ui->tableWidget->setHorizontalHeaderLabels(m_header);
   ui->tableWidget->horizontalHeader()->hideSection(0);
