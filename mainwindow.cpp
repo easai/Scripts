@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  setWindowIcon(QIcon("://images/favicon.ico"));
+  setWindowIcon(QIcon("://images/scripts-favicon.ico"));
   m_db = QSqlDatabase::addDatabase("QODBC", "linguistics");
   m_db.setDatabaseName("linguistics");
   connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
